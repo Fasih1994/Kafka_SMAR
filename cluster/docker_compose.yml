@@ -1,0 +1,72 @@
+version: '3'
+
+services:
+  zookeeper:
+    image: "confluentinc/cp-zookeeper:latest"
+    container_name: zookeeper
+    ports:
+      - 2181:2181
+    environment:
+      ZOOKEEPER_SERVER_ID: 1
+      ZOOKEEPER_CLIENT_PORT: "2181"
+      ZOOKEEPER_TICK_TIME: "2000"
+      ZOOKEEPER_SERVERS: "zookeeper:2888:3888"
+    volumes:
+      - ./data:/var/lib/zookeeper/data
+      - ./logs:/var/lib/zookeeper/log
+
+  kafka1:
+    image: "confluentinc/cp-enterprise-kafka:latest"
+    container_name: kafka1
+    ports:
+      - '9093:9093'
+    volumes:
+      - kafka1_data:/var/lib/kafka/data
+    environment:
+      KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
+      KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: PLAINTEXT:PLAINTEXT,PLAINTEXT_LOCAL_HOST:PLAINTEXT
+      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://kafka1:9092,PLAINTEXT_LOCAL_HOST://localhost:9093
+      KAFKA_BROKER_ID: 1
+      KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
+    depends_on:
+      - zookeeper
+
+  kafka2:
+    image: "confluentinc/cp-enterprise-kafka:latest"
+    container_name: kafka2
+    ports:
+      - '9094:9094'
+    volumes:
+      - kafka2_data:/var/lib/kafka/data
+    environment:
+      KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
+      KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: PLAINTEXT:PLAINTEXT,PLAINTEXT_LOCAL_HOST:PLAINTEXT
+      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://kafka2:9092,PLAINTEXT_LOCAL_HOST://localhost:9094
+      KAFKA_BROKER_ID: 2
+      KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
+
+    depends_on:
+      - zookeeper
+
+  kafka3:
+    image: "confluentinc/cp-enterprise-kafka:latest"
+    container_name: kafka3
+    ports:
+      - '9095:9095'
+    volumes:
+      - kafka3_data:/var/lib/kafka/data
+    environment:
+      KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
+      KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: PLAINTEXT:PLAINTEXT,PLAINTEXT_LOCAL_HOST:PLAINTEXT
+      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://kafka3:9092,PLAINTEXT_LOCAL_HOST://localhost:9095
+      KAFKA_BROKER_ID: 3
+      KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
+
+    depends_on:
+      - zookeeper
+
+
+volumes:
+  kafka1_data:
+  kafka2_data:
+  kafka3_data:
