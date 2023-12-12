@@ -3,6 +3,7 @@ version: '3'
 services:
   zookeeper:
     image: "confluentinc/cp-zookeeper:latest"
+    user: root
     container_name: zookeeper
     ports:
       - 2181:2181
