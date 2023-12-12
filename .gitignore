@@ -1,6 +1,6 @@
 kafka_*/data/*
-zookeeper/data/*
-zookeeper/logs/*
+cluster/data/*
+cluster/logs/*
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]
