@@ -27,6 +27,7 @@ def msg_process(msg):
     # msg_str = msg.value().decode('utf-8')
     # print(json.loads(msg_str))
 
+WAIT_COUNT = 0
 
 running = True
 
@@ -36,7 +37,14 @@ def consume_loop(consumer, topics):
 
         while running:
             msg = consumer.poll(timeout=2.1)
-            if msg is None: continue
+
+            if msg is None:
+                print('waiting...')
+                global WAIT_COUNT
+                WAIT_COUNT += 1
+                if WAIT_COUNT > 7:
+                    break
+                else: continue
 
             if msg.error():
                 if msg.error().code() == KafkaError._PARTITION_EOF:
@@ -48,6 +56,7 @@ def consume_loop(consumer, topics):
             else:
                 consumer.commit(asynchronous=False)
                 msg_process(msg)
+                WAIT_COUNT = 0
 
     finally:
         # Close down consumer to commit final offsets.
@@ -56,7 +65,7 @@ def consume_loop(consumer, topics):
 
 if __name__=="__main__":
     args = parser.parse_args()
-    print(args.topic, args.broker, args.group)
+    print('INFO:', args.topic, args.broker, args.group)
     conf = {
         'bootstrap.servers': args.broker,
         'group.id': args.group,
