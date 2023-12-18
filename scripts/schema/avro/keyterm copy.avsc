@@ -1,0 +1,30 @@
+{
+    "namespace": "confluent.io.examples.serialization.avro",
+    "name": "Keyterm",
+    "type": "record",
+    "fields": [
+        {
+            "name": "user_id",
+            "type": "int"
+        },
+        {
+            "name": "organization_id",
+            "type": "int"
+        },
+        {
+            "name": "key_term",
+            "type": "string"
+        },
+        {
+            "name": "platform",
+            "type": "string"
+        },
+        {   "name": "kwargs",
+            "type": {
+                "type": "map",
+                "values": ["null", "string"]
+                },
+            "default": {}
+        }
+    ]
+}
