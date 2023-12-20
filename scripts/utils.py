@@ -2,9 +2,10 @@ from confluent_kafka.serialization import StringSerializer
 from confluent_kafka.schema_registry import SchemaRegistryClient
 from confluent_kafka.schema_registry.avro import AvroSerializer, AvroDeserializer
 
-from config import (
+from scripts.config import (
     schema_registry_conf,
     KEY_TERM_SCHEMA,
+    TASKS_SCHEMA
 )
 
 
@@ -15,7 +16,12 @@ schema_registry_client = SchemaRegistryClient(schema_registry_conf)
 string_serializer = StringSerializer('utf_8')
 keyterm_serializer = AvroSerializer(schema_registry_client,
                                     KEY_TERM_SCHEMA)
+task_serializer = AvroSerializer(schema_registry_client,
+                                    TASKS_SCHEMA)
+
 
 #DESERIALIZER
 keyterm_deserializer = AvroDeserializer(schema_registry_client,
                                          KEY_TERM_SCHEMA)
+task_deserializer = AvroDeserializer(schema_registry_client,
+                                    TASKS_SCHEMA)

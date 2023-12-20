@@ -1,17 +1,20 @@
 from confluent_kafka import Consumer
 from confluent_kafka.serialization import SerializationContext, MessageField
 
-from config import (
+from scripts.config import (
     consumer_conf,
-    KEY_TERM_TOPIC
+    KEY_TERM_TOPIC,
+    POST_TASKS_TOPIC
 )
-from utils import (
-    keyterm_deserializer
+
+from scripts.utils import (
+    keyterm_deserializer,
+    task_serializer
 )
 
 
 def main():
-
+    consumer_conf['group.id'] = 'twitter_update_post_tasks'
     consumer = Consumer(consumer_conf)
     consumer.subscribe([KEY_TERM_TOPIC])
     WAIT_COUNT = 0
@@ -21,9 +24,8 @@ def main():
             # SIGINT can't be handled when polling, limit timeout to 1 second.
             msg = consumer.poll(10)
             if msg is None:
-                print('waiting...')
                 WAIT_COUNT += 1
-                if WAIT_COUNT > 7:
+                if WAIT_COUNT == 7:
                     break
                 continue
 

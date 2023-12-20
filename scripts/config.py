@@ -2,19 +2,24 @@ import os
 import socket
 
 
-producer_conf = {'bootstrap.servers': 'localhost:9093,localhost:9094,localhost:9095',
-        'client.id': socket.gethostname(),
-        'enable.idempotence': True}
+producer_conf = {
+    'bootstrap.servers': 'localhost:9093,localhost:9094,localhost:9095',
+    'client.id': socket.gethostname(),
+    'enable.idempotence': True
+    }
 
-consumer_conf = {'bootstrap.servers': 'localhost:9093,localhost:9094,localhost:9095',
-                     'group.id': "DataPipeline",
-                     'auto.offset.reset': "earliest"}
 
+consumer_conf = {
+    'bootstrap.servers': 'localhost:9093,localhost:9094,localhost:9095',
+    'auto.offset.reset': "earliest"
+    }
 
 
 schema_registry_conf = {'url': 'http://localhost:8081'}
 
-avro_schema_path = "/home/fasih/k_cluster_smar/scripts/schema/avro"
+
+avro_schema_path = "/home/fasih/k_cluster_smar/schema/avro"
+
 
 # TOPICS
 KEY_TERM_TOPIC = "keyterm"

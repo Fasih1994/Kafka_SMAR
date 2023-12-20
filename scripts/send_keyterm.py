@@ -7,11 +7,11 @@ import random
 from confluent_kafka import Producer
 from confluent_kafka.serialization import SerializationContext, MessageField
 
-from config import (
+from scripts.config import (
     producer_conf,
     KEY_TERM_TOPIC
 )
-from utils import (
+from scripts.utils import (
     string_serializer,
     keyterm_serializer
 )
@@ -90,10 +90,10 @@ if __name__ == "__main__":
     users = [1,2,3,4,5,6,7]
     orgs = [12,13,14,15,16,17]
     projects = [122,133,144,155,166,177]
-    platforms = ["A", "B", "C", "D", "E", "F"]
+    platforms = ["twitter", "facebook", "instagram", "linkedin", "tiktok"][0:1]
     keyterms = ["dubai Economy", "Industry", "Fifa world cup", 'Formula1 races']
-    from_dates = ['2021-01-1','2020-11-12','2021-03-30','2020-09-10','2021-02-30', None]
-    from_dates = ['2022-01-1','2023-11-12','2022-03-30','2023-09-10','2023-02-30', None]
+    from_dates = ['2021-01-1','2020-11-12','2021-03-30','2020-09-10','2021-02-30']
+    to_dates = ['2022-01-1','2023-11-12','2022-03-30','2023-09-10','2023-02-30']
 
     for i in range(1):
         try:
@@ -103,9 +103,9 @@ if __name__ == "__main__":
                 project_id=random.choice(projects),
                 organization_id=random.choice(orgs),
                 platform=random.choices(platforms)[0],
-                keyterms=random.choice(keyterms),
-                from_date='2021-01-1',
-                to_date='2022-12-31'
+                keyterms=random.choice(keyterms).lower(),
+                from_date=random.choice(from_dates),
+                to_date=random.choice(to_dates)
                 )
             if i%1000==0:
                 producer.flush()
