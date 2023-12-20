@@ -1,5 +1,5 @@
 {
-    "name": "Keyterm",
+    "name": "Tasks",
     "type": "record",
     "fields": [
         {
@@ -15,22 +15,12 @@
             "type": "int"
         },
         {
-            "name": "key_term",
-            "type": "string"
-        },
-        {
             "name": "platform",
             "type": "string"
         },
         {
-            "name": "from_date",
-            "type": ["string", "null"],
-            "default": ""
-        },
-        {
-            "name": "to_date",
-            "type": ["string", "null"],
-            "default": ""
+            "name": "url",
+            "type": "string"
         }
     ]
 }

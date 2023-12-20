@@ -13,9 +13,16 @@ admin_conf = {
 if __name__=="__main__":
     args = parser.parse_args()
     admin = AdminClient(admin_conf)
-    topic = NewTopic(args.topic,
+
+    topics = [NewTopic(topic,
                      num_partitions = 3,
                      replication_factor = 2)
+              for topic in args.topic.split(',')]
 
-    result = admin.create_topics([topic])
-    print(f"Topics {args.topic} created succesfully!")
+    result = admin.create_topics(topics)
+    for topic, f in result.items():
+        try:
+            f.result()  # The result itself is None
+            print("Topic {} created".format(topic))
+        except Exception as e:
+            print("Failed to create topic {}: {}".format(topic, e))
