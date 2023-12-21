@@ -67,6 +67,12 @@ def send_keyterm(
         raise ValueError('Both date params must be provided if '
                          'any of [to_date or from_date] is passed')
 
+    if to_date:
+        if from_date>to_date:
+            raise ValueError(
+                "from_date must be less than to_date"
+            )
+
     MSG['user_id'] = user_id
     MSG["organization_id"] = organization_id
     MSG["project_id"] = project_id
@@ -87,15 +93,16 @@ def send_keyterm(
 
 
 if __name__ == "__main__":
-    users = [1,2,3,4,5,6,7]
-    orgs = [12,13,14,15,16,17]
-    projects = [122,133,144,155,166,177]
+    users = [1, 2, 3, 4, 5, 6, 7]
+    orgs = [12, 13, 14, 15, 16, 17]
+    projects = [122, 133, 144, 155, 166, 177]
     platforms = ["twitter", "facebook", "instagram", "linkedin", "tiktok"][0:1]
     keyterms = ["dubai Economy", "Industry", "Fifa world cup", 'Formula1 races']
-    from_dates = ['2021-01-1','2020-11-12','2021-03-30','2020-09-10','2021-02-30']
-    to_dates = ['2022-01-1','2023-11-12','2022-03-30','2023-09-10','2023-02-30']
+    from_dates = ['2021-01-01', '2020-11-12', '2021-03-30', '2020-09-10', '2021-02-28']
+    to_dates = ['2022-01-01', '2023-11-12', '2022-03-30', '2023-09-10', '2023-02-28']
 
-    for i in range(1):
+
+    for i in range(10):
         try:
 
             send_keyterm(

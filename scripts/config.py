@@ -1,5 +1,7 @@
 import os
 import socket
+from dotenv import load_dotenv
+load_dotenv()
 
 
 producer_conf = {
@@ -7,6 +9,13 @@ producer_conf = {
     'client.id': socket.gethostname(),
     'enable.idempotence': True
     }
+
+
+twitter_post_base_param = {
+    'access_token': os.environ['DATA365_KEY'],
+    'max_page_size': 100,
+    'order_by': "date_asc"
+}
 
 
 consumer_conf = {
