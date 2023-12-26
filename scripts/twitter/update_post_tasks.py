@@ -75,11 +75,11 @@ def main():
     while True:
         try:
             # SIGINT can't be handled when polling, limit timeout to 1 second.
-            msg = consumer.poll(10)
+            msg = consumer.poll(20)
             if msg is None:
                 WAIT_COUNT += 1
                 if WAIT_COUNT == 7:
-                    logger.info(f'Closing consumer [{consumer_conf["group.id"]}]')
+                    logger.info(f'Closing consumer {consumer_conf["group.id"]}')
                     break
                 continue
 

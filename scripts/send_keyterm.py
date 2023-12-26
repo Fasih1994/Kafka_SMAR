@@ -102,7 +102,7 @@ if __name__ == "__main__":
     to_dates = ['2022-01-01', '2023-11-12', '2022-03-30', '2023-09-10', '2023-02-28']
 
 
-    for i in range(10):
+    for i in range(1):
         try:
 
             send_keyterm(

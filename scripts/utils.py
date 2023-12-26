@@ -5,7 +5,8 @@ from confluent_kafka.schema_registry.avro import AvroSerializer, AvroDeserialize
 from scripts.config import (
     schema_registry_conf,
     KEY_TERM_SCHEMA,
-    TASKS_SCHEMA
+    TASKS_SCHEMA,
+    POST_SCHEMA
 )
 
 
@@ -18,10 +19,13 @@ keyterm_serializer = AvroSerializer(schema_registry_client,
                                     KEY_TERM_SCHEMA)
 task_serializer = AvroSerializer(schema_registry_client,
                                     TASKS_SCHEMA)
-
+post_serializer = AvroSerializer(schema_registry_client,
+                                    POST_SCHEMA)
 
 #DESERIALIZER
 keyterm_deserializer = AvroDeserializer(schema_registry_client,
                                          KEY_TERM_SCHEMA)
 task_deserializer = AvroDeserializer(schema_registry_client,
                                     TASKS_SCHEMA)
+post_deserializer = AvroDeserializer(schema_registry_client,
+                                    POST_SCHEMA)

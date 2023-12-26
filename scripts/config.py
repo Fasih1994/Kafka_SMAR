@@ -46,3 +46,6 @@ with open(os.path.join(avro_schema_path, 'keyterm.avsc')) as f:
 
 with open(os.path.join(avro_schema_path, 'tasks.avsc')) as f:
     TASKS_SCHEMA = f.read()
+
+with open(os.path.join(avro_schema_path, 'post.avsc')) as f:
+    POST_SCHEMA = f.read()

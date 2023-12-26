@@ -2,6 +2,7 @@ kafka_*/data/*
 cluster/data/*
 cluster/logs/*
 archive
+logs/*
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]
