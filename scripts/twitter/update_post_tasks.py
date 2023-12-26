@@ -71,6 +71,7 @@ def main():
     consumer = Consumer(consumer_conf)
     consumer.subscribe([KEY_TERM_TOPIC])
     WAIT_COUNT = 0
+    logger.info(f'Starting consumer {consumer_conf["group.id"]}')
 
     while True:
         try:

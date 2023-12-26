@@ -7,27 +7,25 @@ from utils import get_logger
 from scripts.config import (
     consumer_conf,
     producer_conf,
-    POST_TASKS_TOPIC,
-    POST_TASKS_FINISHED_TOPIC
+    COMMENT_TASKS_TOPIC,
+    COMMENT_TASKS_FINISHED_TOPIC
 )
 from scripts.utils import (
     task_serializer,
     task_deserializer
 )
 
-pendind_tasks = {}
-
 logger = get_logger("SMAR")
 
 def delivery_report(err, msg):
     if err is not None:
-        logger.error("Delivery failed for Task record {}: {}".format(msg.key(), err))
+        logger.error("Delivery failed for Comment Task record {}: {}".format(msg.key(), err))
         return
-    # logger.info('Task record {} successfully produced to {} parttition [{}] at offset {}'.format(
+    # logger.info('Comment Task record {} successfully produced to {} parttition [{}] at offset {}'.format(
     #     msg.key(), msg.topic(), msg.partition(), msg.offset()))
 
 
-def check_post_task(msg=None, task_data: dict=None):
+def check_comment_task(msg=None, task_data: dict=None):
     # check if task is pending task
     r = requests.get(task_data['url'])
 
@@ -40,9 +38,9 @@ def check_post_task(msg=None, task_data: dict=None):
                 f"Finished Task for {task_data}"
             )
             producer.produce(
-                POST_TASKS_FINISHED_TOPIC,
+                COMMENT_TASKS_FINISHED_TOPIC,
                 key=msg.key(),
-                value=task_serializer(task_data, SerializationContext(POST_TASKS_TOPIC, MessageField.VALUE)),
+                value=task_serializer(task_data, SerializationContext(COMMENT_TASKS_FINISHED_TOPIC, MessageField.VALUE)),
                 on_delivery=delivery_report
             )
             producer.flush()
@@ -51,9 +49,9 @@ def check_post_task(msg=None, task_data: dict=None):
         elif response['data']['status'] in ("pending", "created"):
             # if task is pending add to cache
             producer.produce(
-                POST_TASKS_TOPIC,
+                COMMENT_TASKS_TOPIC,
                 key=msg.key(),
-                value=task_serializer(task_data, SerializationContext(POST_TASKS_TOPIC, MessageField.VALUE)),
+                value=task_serializer(task_data, SerializationContext(COMMENT_TASKS_TOPIC, MessageField.VALUE)),
                 on_delivery=delivery_report
             )
             producer.flush()
@@ -68,10 +66,11 @@ def check_post_task(msg=None, task_data: dict=None):
     return False
 
 
+
 def main():
-    consumer_conf['group.id'] = 'twitter_check_post_tasks'
+    consumer_conf['group.id'] = 'twitter_check_comment_tasks'
     consumer = Consumer(consumer_conf)
-    consumer.subscribe([POST_TASKS_TOPIC])
+    consumer.subscribe([COMMENT_TASKS_TOPIC])
     WAIT_COUNT = 0
     logger.info(f'Starting consumer {consumer_conf["group.id"]}')
 
@@ -91,7 +90,7 @@ def main():
                 WAIT_COUNT=0
                 if task_data['platform'] == 'twitter':
                     try:
-                        finished = check_post_task(msg=msg, task_data=task_data)
+                        finished = check_comment_task(msg=msg, task_data=task_data)
                         if finished:
                             consumer.commit()
                     except Exception as e:
@@ -102,7 +101,7 @@ def main():
             break
 
     consumer.close()
-    logger.info("All task completed for posts.")
+    logger.info("All task completed for comments.")
 
 
 if __name__ == '__main__':

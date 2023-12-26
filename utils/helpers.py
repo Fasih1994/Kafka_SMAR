@@ -1,25 +1,32 @@
 import requests
+from retrying import retry
 
-def get_data(url:str = None, page:str = None ):
+
+@retry(stop_max_attempt_number=3, wait_fixed=3000)
+def get_data(url:str = None, page:str = None, *args, **kwargs):
 
     try:
 
         if page:
             url += f'&cursor={page}'
 
-        r = requests.get(url=url)
+        r = requests.get(url=url, *args, **kwargs)
 
         if r.status_code==200:
             data = r.json()['data']
             if len(data['items'])>0:
                 return data
-            print(r.json())
             return None
+        elif str(r.status_code).startswith('5'):
+            print(f'Received 524 status code. Retrying...')
+            raise Exception('Retry due to 5xx status code')
+
         else:
-            print(f'error occured for {url}')
+            print(f'error occured for {r.url}')
             print(r.status_code, r.json()['error']['message'], sep='\n')
             raise Exception
     except Exception as e:
+        print(r.status_code)
         print(str(e))
 
 def join_list(array:list = None)-> str:
@@ -45,9 +52,10 @@ def transform_data(items:list=None, keyword: str=None, task_data: dict=None)->li
         data['user_id'] = task_data['user_id']
         data['organization_id'] = task_data['organization_id']
         data['project_id'] = task_data['project_id']
-        data['term'] = keyword
         data['sentiment'] = 'unknown'
         data['tone'] = 'unknown'
+        if keyword:
+            data['term'] = keyword
         result.append(data)
 
     return result

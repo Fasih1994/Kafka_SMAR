@@ -6,7 +6,8 @@ from scripts.config import (
     schema_registry_conf,
     KEY_TERM_SCHEMA,
     TASKS_SCHEMA,
-    POST_SCHEMA
+    POST_SCHEMA,
+    COMMENT_SCHEMA
 )
 
 
@@ -21,6 +22,8 @@ task_serializer = AvroSerializer(schema_registry_client,
                                     TASKS_SCHEMA)
 post_serializer = AvroSerializer(schema_registry_client,
                                     POST_SCHEMA)
+comment_serializer = AvroSerializer(schema_registry_client,
+                                    COMMENT_SCHEMA)
 
 #DESERIALIZER
 keyterm_deserializer = AvroDeserializer(schema_registry_client,
@@ -29,3 +32,5 @@ task_deserializer = AvroDeserializer(schema_registry_client,
                                     TASKS_SCHEMA)
 post_deserializer = AvroDeserializer(schema_registry_client,
                                     POST_SCHEMA)
+comment_deserializer = AvroDeserializer(schema_registry_client,
+                                    COMMENT_SCHEMA)

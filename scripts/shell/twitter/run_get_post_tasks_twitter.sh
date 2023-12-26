@@ -2,7 +2,7 @@
 
 # Set the Kafka bootstrap server and consumer group
 BOOTSTRAP_SERVER="localhost:9093,localhost:9094,localhost:9095"
-CONSUMER_GROUP="twitter_check_post_tasks"
+CONSUMER_GROUP="twitter_get_post_data"
 
 ROOT_DIR=/home/fasih/k_cluster_smar
 
@@ -17,7 +17,7 @@ echo "$current_time - Number of unique consumer IDs in group '$CONSUMER_GROUP': 
 if [ $UNIQUE_CONSUMER_COUNT -lt 1 ]; then
     echo "$current_time - Count is less than 1. Running Python script..."
     # Execute your Python script here
-    $ROOT_DIR/venv/bin/python -u $ROOT_DIR/scripts/twitter/check_post_tasks.py > "$ROOT_DIR/scripts/logs/$current_time-$CONSUMER_GROUP.log"
+    $ROOT_DIR/venv/bin/python -u $ROOT_DIR/scripts/twitter/get_post_data.py
 else
     echo "Consumer already Up."
 fi
