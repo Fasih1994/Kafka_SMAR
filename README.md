@@ -6,7 +6,7 @@ This is a Kafka Cluster setup with confluent stack, it includes
 * Kafka
 * Kafka Connect
 * Schema Registry
-* KSQL
+* Python
 
 # Kafka_SMAR
 
@@ -30,8 +30,8 @@ This is a Kafka Cluster setup with confluent stack, it includes
 - CREATE TWITTER COMMENTS CONNECTOR
 `curl -s -X POST -H 'Content-Type: application/json' --data @k_connect/connectors/twitter_comments_connector.json http://localhost:8083/connectors | jq`
 
-- DELETE TWITTER Comments CONNECTOR
+- DELETE TWITTER COMMENTS CONNECTOR
 `curl -s -X DELETE -H 'Content-Type: application/json' http://localhost:8083/connectors/twitter-comment-sink/ | jq`
 
-- RUN all scripts
+- Start all consumers for twitter
 `./scripts/shell/twitter/run_all.sh`
