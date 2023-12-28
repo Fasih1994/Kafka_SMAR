@@ -32,12 +32,23 @@ avro_schema_path = "/home/fasih/k_cluster_smar/schema/avro"
 
 # TOPICS
 KEY_TERM_TOPIC = "keyterm"
+
+# Twitter
+POSTS_TOPIC = "posts"
 POST_TASKS_TOPIC = "post_tasks"
 POST_TASKS_FINISHED_TOPIC = "post_task_finished"
-POSTS_TOPIC = "posts"
+COMMENTS_TOPIC = "comments"
 COMMENT_TASKS_TOPIC = "comment_tasks"
 COMMENT_TASKS_FINISHED_TOPIC = "comment_tasks_finished"
-COMMENTS_TOPIC = "comments"
+
+# Facebook
+FACEBOOK_POSTS_TOPIC = "facebook_posts"
+FACEBOOK_POST_TASKS_TOPIC = "facebook_post_tasks"
+FACEBOOK_POST_TASKS_FINISHED_TOPIC = "facebook_post_task_finished"
+FACEBOOK_COMMENTS_TOPIC = "facebook_comments"
+FACEBOOK_COMMENT_TASKS_TOPIC = "facebook_comment_tasks"
+FACEBOOK_COMMENT_TASKS_FINISHED_TOPIC = "facebook_comment_tasks_finished"
+
 
 
 # SCHEMAS
@@ -52,3 +63,9 @@ with open(os.path.join(avro_schema_path, 'post.avsc')) as f:
 
 with open(os.path.join(avro_schema_path, 'comment.avsc')) as f:
     COMMENT_SCHEMA = f.read()
+
+with open(os.path.join(avro_schema_path, 'facebook_post.avsc')) as f:
+    FACEBOOK_POST_SCHEMA = f.read()
+
+with open(os.path.join(avro_schema_path, 'facebook_comment.avsc')) as f:
+    FACEBOOK_COMMENT_SCHEMA = f.read()

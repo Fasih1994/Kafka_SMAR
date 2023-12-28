@@ -7,7 +7,9 @@ from scripts.config import (
     KEY_TERM_SCHEMA,
     TASKS_SCHEMA,
     POST_SCHEMA,
-    COMMENT_SCHEMA
+    COMMENT_SCHEMA,
+    FACEBOOK_POST_SCHEMA,
+    FACEBOOK_COMMENT_SCHEMA
 )
 
 
@@ -24,6 +26,10 @@ post_serializer = AvroSerializer(schema_registry_client,
                                     POST_SCHEMA)
 comment_serializer = AvroSerializer(schema_registry_client,
                                     COMMENT_SCHEMA)
+facebook_post_serializer = AvroSerializer(schema_registry_client,
+                                          FACEBOOK_POST_SCHEMA)
+facebook_comment_serializer = AvroSerializer(schema_registry_client,
+                                          FACEBOOK_COMMENT_SCHEMA)
 
 #DESERIALIZER
 keyterm_deserializer = AvroDeserializer(schema_registry_client,
@@ -34,3 +40,7 @@ post_deserializer = AvroDeserializer(schema_registry_client,
                                     POST_SCHEMA)
 comment_deserializer = AvroDeserializer(schema_registry_client,
                                     COMMENT_SCHEMA)
+facebook_post_deserializer = AvroDeserializer(schema_registry_client,
+                                          FACEBOOK_POST_SCHEMA)
+facebook_comment_deserializer = AvroDeserializer(schema_registry_client,
+                                          FACEBOOK_COMMENT_SCHEMA)
