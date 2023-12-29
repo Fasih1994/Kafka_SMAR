@@ -35,3 +35,6 @@ This is a Kafka Cluster setup with confluent stack, it includes
 
 - Start all consumers for twitter
 `./scripts/shell/twitter/run_all.sh`
+
+- Check running tasks
+`ps aux | grep k_cluster_smar`

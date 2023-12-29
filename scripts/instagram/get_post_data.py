@@ -1,5 +1,5 @@
-from urllib.parse import urlparse, parse_qs
 from time import sleep
+from urllib.parse import unquote
 
 from confluent_kafka import Consumer, Producer, TopicPartition
 from confluent_kafka.serialization import SerializationContext, MessageField
@@ -8,13 +8,14 @@ from utils import get_logger, get_data, transform_data
 from scripts.config import (
     consumer_conf,
     producer_conf,
-    POST_TASKS_FINISHED_TOPIC,
-    POSTS_TOPIC
+    INSTAGRAM_POST_TASKS_FINISHED_TOPIC,
+    INSTAGRAM_POSTS_TOPIC
 )
 
 from scripts.utils import (
     task_deserializer,
-    post_serializer
+    string_serializer,
+    instagram_post_serializer
 )
 
 
@@ -23,8 +24,8 @@ logger = get_logger("SMAR")
 
 def get_post_url(url: str=None)-> str:
     url = url.replace(
-        "https://api.data365.co/v1.1/twitter/search/post/update",
-        "https://api.data365.co/v1.1/twitter/search/post/posts"
+        "/update",
+        "/posts"
     )
     return url
 
@@ -41,10 +42,11 @@ def produce_post(msg=None, posts: list=None):
     producer = Producer(producer_conf)
 
     for post in posts:
+        key = str(post['id'])+str(post['organization_id'])+str(post['user_id'])+str(post['project_id'])
         producer.produce(
-            POSTS_TOPIC,
-            key=msg.key(),
-            value=post_serializer(post, SerializationContext(POSTS_TOPIC, MessageField.VALUE)),
+            INSTAGRAM_POSTS_TOPIC,
+            key=string_serializer(key),
+            value=instagram_post_serializer(post, SerializationContext(INSTAGRAM_POSTS_TOPIC, MessageField.VALUE)),
             on_delivery=delivery_report
         )
     producer.flush()
@@ -57,7 +59,7 @@ def get_post_data(msg=None, task_data: dict=None):
     post_url = get_post_url(task_data['url'])
 
     # get key word from url
-    keyword = parse_qs(urlparse(post_url).query)['keywords'][0]
+    keyword = unquote(post_url.split('/')[6])
     data_available = True
     cursor = None
     tries = 0
@@ -87,6 +89,7 @@ def get_post_data(msg=None, task_data: dict=None):
             if tries==3:
                 logger.error(f"Empty data returned by {post_url} in 3 tries.")
                 data_available = False
+                produced = True
             else:
                 sleep(0.3)
                 continue
@@ -94,9 +97,9 @@ def get_post_data(msg=None, task_data: dict=None):
 
 
 def main():
-    consumer_conf['group.id'] = 'twitter_get_post_data'
+    consumer_conf['group.id'] = 'instagram_get_post_data'
     consumer = Consumer(consumer_conf)
-    consumer.subscribe([POST_TASKS_FINISHED_TOPIC])
+    consumer.subscribe([INSTAGRAM_POST_TASKS_FINISHED_TOPIC])
     WAIT_COUNT = 0
     logger.info(f'Starting consumer {consumer_conf["group.id"]}')
 
@@ -113,15 +116,14 @@ def main():
             if msg is not None:
                 task_data = task_deserializer(msg.value(), SerializationContext(msg.topic(), MessageField.VALUE))
                 WAIT_COUNT=0
-                if task_data['platform'] == 'twitter':
-                    try:
-                        finished = get_post_data(msg=msg, task_data=task_data)
-                        if finished:
-                            consumer.commit()
-                    except Exception as e:
-                        tp = TopicPartition(msg.topic(), msg.partition(), msg.offset())
-                        consumer.seek(tp)
-                        logger.error(e)
+                try:
+                    finished = get_post_data(msg=msg, task_data=task_data)
+                    if finished:
+                        consumer.commit()
+                except Exception as e:
+                    tp = TopicPartition(msg.topic(), msg.partition(), msg.offset())
+                    consumer.seek(tp)
+                    logger.error(e)
         except KeyboardInterrupt:
             break
 

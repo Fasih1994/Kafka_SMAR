@@ -4,12 +4,10 @@ from confluent_kafka.schema_registry.avro import AvroSerializer, AvroDeserialize
 
 from scripts.config import (
     schema_registry_conf,
-    KEY_TERM_SCHEMA,
-    TASKS_SCHEMA,
-    POST_SCHEMA,
-    COMMENT_SCHEMA,
-    FACEBOOK_POST_SCHEMA,
-    FACEBOOK_COMMENT_SCHEMA
+    KEY_TERM_SCHEMA, TASKS_SCHEMA,
+    POST_SCHEMA, COMMENT_SCHEMA,
+    FACEBOOK_POST_SCHEMA, FACEBOOK_COMMENT_SCHEMA,
+    INSTAGRAM_POST_SCHEMA, INSTAGRAM_COMMENT_SCHEMA
 )
 
 
@@ -30,6 +28,10 @@ facebook_post_serializer = AvroSerializer(schema_registry_client,
                                           FACEBOOK_POST_SCHEMA)
 facebook_comment_serializer = AvroSerializer(schema_registry_client,
                                           FACEBOOK_COMMENT_SCHEMA)
+instagram_post_serializer = AvroSerializer(schema_registry_client,
+                                          INSTAGRAM_POST_SCHEMA)
+instagram_comment_serializer = AvroSerializer(schema_registry_client,
+                                          INSTAGRAM_COMMENT_SCHEMA)
 
 #DESERIALIZER
 keyterm_deserializer = AvroDeserializer(schema_registry_client,
@@ -44,3 +46,7 @@ facebook_post_deserializer = AvroDeserializer(schema_registry_client,
                                           FACEBOOK_POST_SCHEMA)
 facebook_comment_deserializer = AvroDeserializer(schema_registry_client,
                                           FACEBOOK_COMMENT_SCHEMA)
+instagram_post_deserializer = AvroDeserializer(schema_registry_client,
+                                          INSTAGRAM_POST_SCHEMA)
+instagram_comment_deserializer = AvroDeserializer(schema_registry_client,
+                                          INSTAGRAM_COMMENT_SCHEMA)

@@ -92,7 +92,7 @@ def get_post_data(msg=None, task_data: dict=None):
             else:
                 sleep(0.3)
                 continue
-    return produced
+    return True
 
 
 def main():

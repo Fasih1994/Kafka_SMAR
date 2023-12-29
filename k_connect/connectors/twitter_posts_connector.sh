@@ -18,7 +18,7 @@ CONNECTOR_CONF='{
         "value.converter.schema.registry.url": "http://schema-registry:8081",
         "auto.offset.reset": "earliest",
         "pk.mode": "record_value",
-        "pk.fields": "id,user_id,organization_id,project_id",
+        "pk.fields": "id,user_id,organization_id,project_id,term",
         "auto.evolve": true
     }
 }'

@@ -6,25 +6,27 @@ from confluent_kafka.serialization import SerializationContext, MessageField
 
 from utils import get_logger, get_data, transform_data
 from scripts.config import (
+    twitter_post_base_param,
     consumer_conf,
     producer_conf,
-    POST_TASKS_FINISHED_TOPIC,
-    POSTS_TOPIC
+    INSTAGRAM_COMMENT_TASKS_FINISHED_TOPIC,
+    INSTAGRAM_COMMENTS_TOPIC
 )
 
 from scripts.utils import (
     task_deserializer,
-    post_serializer
+    instagram_comment_serializer
 )
 
 
 logger = get_logger("SMAR")
 
 
-def get_post_url(url: str=None)-> str:
+def get_comment_url(url: str=None)-> str:
+    url = url.split("?")[0]
     url = url.replace(
-        "https://api.data365.co/v1.1/twitter/search/post/update",
-        "https://api.data365.co/v1.1/twitter/search/post/posts"
+        "/update",
+        "/comments"
     )
     return url
 
@@ -37,44 +39,56 @@ def delivery_report(err, msg):
     #     msg.key(), msg.topic(), msg.partition(), msg.offset()))
 
 
-def produce_post(msg=None, posts: list=None):
+def produce_comment(msg=None, comments: list=None, url: str=None):
     producer = Producer(producer_conf)
+    producer.flush()
 
-    for post in posts:
+    for comment in comments:
         producer.produce(
-            POSTS_TOPIC,
+            INSTAGRAM_COMMENTS_TOPIC,
             key=msg.key(),
-            value=post_serializer(post, SerializationContext(POSTS_TOPIC, MessageField.VALUE)),
+            value=instagram_comment_serializer(
+                comment,
+                SerializationContext(INSTAGRAM_COMMENTS_TOPIC, MessageField.VALUE)),
             on_delivery=delivery_report
         )
     producer.flush()
-    logger.info(f"produced {len(posts)} posts.")
+    logger.info(f"produced {len(comments)} comments for {url}.")
     return True
 
 
-def get_post_data(msg=None, task_data: dict=None):
+def get_comments_data(msg=None, task_data: dict=None):
     # check task status
-    post_url = get_post_url(task_data['url'])
+    comments_url = get_comment_url(task_data['url'])
 
     # get key word from url
-    keyword = parse_qs(urlparse(post_url).query)['keywords'][0]
     data_available = True
     cursor = None
     tries = 0
 
+
     while data_available:
+        params = {
+            "access_token": twitter_post_base_param['access_token'],
+            "order_by": "date_desc",
+            "max_page_size": 100
+        }
+
         if cursor:
-            data = get_data(url=post_url, page=cursor )
+            params['cursor']=cursor
+            data = get_data(url=comments_url, params=params)
         else:
-            data = get_data(url=post_url )
+            data = get_data(url=comments_url, params=params )
 
         if data:
-            posts = data['items']
-            posts = transform_data(
-                items=posts,
-                keyword=keyword,
+            comments = data['items']
+            comments = transform_data(
+                items=comments,
                 task_data=task_data)
-            produced = produce_post(msg=msg, posts=posts)
+
+            produced = produce_comment(msg=msg,
+                                       comments=comments,
+                                       url=comments_url)
 
             if not produced:
                 return False
@@ -85,7 +99,7 @@ def get_post_data(msg=None, task_data: dict=None):
         else:
             tries+=1
             if tries==3:
-                logger.error(f"Empty data returned by {post_url} in 3 tries.")
+                logger.error(f"Empty data returned by {comments_url} in 3 tries.")
                 data_available = False
             else:
                 sleep(0.3)
@@ -94,9 +108,9 @@ def get_post_data(msg=None, task_data: dict=None):
 
 
 def main():
-    consumer_conf['group.id'] = 'twitter_get_post_data'
+    consumer_conf['group.id'] = 'instagram_get_comments_data'
     consumer = Consumer(consumer_conf)
-    consumer.subscribe([POST_TASKS_FINISHED_TOPIC])
+    consumer.subscribe([INSTAGRAM_COMMENT_TASKS_FINISHED_TOPIC])
     WAIT_COUNT = 0
     logger.info(f'Starting consumer {consumer_conf["group.id"]}')
 
@@ -111,11 +125,14 @@ def main():
                 continue
 
             if msg is not None:
-                task_data = task_deserializer(msg.value(), SerializationContext(msg.topic(), MessageField.VALUE))
+                task_data = task_deserializer(
+                    msg.value(),
+                    SerializationContext(msg.topic(), MessageField.VALUE))
+
                 WAIT_COUNT=0
-                if task_data['platform'] == 'twitter':
+                if task_data['platform'] == 'instagram':
                     try:
-                        finished = get_post_data(msg=msg, task_data=task_data)
+                        finished = get_comments_data(msg=msg, task_data=task_data)
                         if finished:
                             consumer.commit()
                     except Exception as e:

@@ -49,6 +49,14 @@ FACEBOOK_COMMENTS_TOPIC = "facebook_comments"
 FACEBOOK_COMMENT_TASKS_TOPIC = "facebook_comment_tasks"
 FACEBOOK_COMMENT_TASKS_FINISHED_TOPIC = "facebook_comment_tasks_finished"
 
+# Instagram
+INSTAGRAM_POSTS_TOPIC = "instagram_posts"
+INSTAGRAM_POST_TASKS_TOPIC = "instagram_post_tasks"
+INSTAGRAM_POST_TASKS_FINISHED_TOPIC = "instagram_post_task_finished"
+INSTAGRAM_COMMENTS_TOPIC = "instagram_comments"
+INSTAGRAM_COMMENT_TASKS_TOPIC = "instagram_comment_tasks"
+INSTAGRAM_COMMENT_TASKS_FINISHED_TOPIC = "instagram_comment_tasks_finished"
+
 
 
 # SCHEMAS
@@ -69,3 +77,9 @@ with open(os.path.join(avro_schema_path, 'facebook_post.avsc')) as f:
 
 with open(os.path.join(avro_schema_path, 'facebook_comment.avsc')) as f:
     FACEBOOK_COMMENT_SCHEMA = f.read()
+
+with open(os.path.join(avro_schema_path, 'instagram_post.avsc')) as f:
+    INSTAGRAM_POST_SCHEMA = f.read()
+
+with open(os.path.join(avro_schema_path, 'instagram_comment.avsc')) as f:
+    INSTAGRAM_COMMENT_SCHEMA = f.read()
