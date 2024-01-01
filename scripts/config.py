@@ -57,6 +57,21 @@ INSTAGRAM_COMMENTS_TOPIC = "instagram_comments"
 INSTAGRAM_COMMENT_TASKS_TOPIC = "instagram_comment_tasks"
 INSTAGRAM_COMMENT_TASKS_FINISHED_TOPIC = "instagram_comment_tasks_finished"
 
+# LinkedIn
+LINKEDIN_POSTS_TOPIC = "linkedin_posts"
+LINKEDIN_POST_TASKS_TOPIC = "linkedin_post_tasks"
+LINKEDIN_POST_TASKS_FINISHED_TOPIC = "linkedin_post_task_finished"
+LINKEDIN_COMMENTS_TOPIC = "linkedin_comments"
+LINKEDIN_COMMENT_TASKS_TOPIC = "linkedin_comment_tasks"
+LINKEDIN_COMMENT_TASKS_FINISHED_TOPIC = "linkedin_comment_tasks_finished"
+
+# TikTok
+TIKTOK_POSTS_TOPIC = "tiktok_posts"
+TIKTOK_POST_TASKS_TOPIC = "tiktok_post_tasks"
+TIKTOK_POST_TASKS_FINISHED_TOPIC = "tiktok_post_task_finished"
+TIKTOK_COMMENTS_TOPIC = "tiktok_comments"
+TIKTOK_COMMENT_TASKS_TOPIC = "tiktok_comment_tasks"
+TIKTOK_COMMENT_TASKS_FINISHED_TOPIC = "tiktok_comment_tasks_finished"
 
 
 # SCHEMAS
@@ -83,3 +98,15 @@ with open(os.path.join(avro_schema_path, 'instagram_post.avsc')) as f:
 
 with open(os.path.join(avro_schema_path, 'instagram_comment.avsc')) as f:
     INSTAGRAM_COMMENT_SCHEMA = f.read()
+
+# with open(os.path.join(avro_schema_path, 'linkedin_post.avsc')) as f:
+#     LINKEDIN_POST_SCHEMA = f.read()
+
+# with open(os.path.join(avro_schema_path, 'linkedin_comment.avsc')) as f:
+#     LINKEDIN_COMMENT_SCHEMA = f.read()
+
+with open(os.path.join(avro_schema_path, 'tiktok_post.avsc')) as f:
+    TIKTOK_POST_SCHEMA = f.read()
+
+with open(os.path.join(avro_schema_path, 'tiktok_comment.avsc')) as f:
+    TIKTOK_COMMENT_SCHEMA = f.read()

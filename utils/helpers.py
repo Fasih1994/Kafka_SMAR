@@ -1,5 +1,6 @@
 import requests
 from retrying import retry
+import json
 
 
 @retry(stop_max_attempt_number=3, wait_fixed=3000)
@@ -47,6 +48,8 @@ def transform_data(items:list=None, keyword: str=None, task_data: dict=None)->li
 
             if isinstance(v, list):
                 data[k] = join_list(v)
+            elif isinstance(v, dict):
+                data[k] = json.dumps(v)
             else:
                 data[k] = v
         data['user_id'] = task_data['user_id']

@@ -1,0 +1,19 @@
+{
+    "type": "record",
+    "name": "TiktokComment",
+    "fields": [
+      {"name": "id", "type": "string", "logicalType": "int64"},
+      {"name": "parent_id", "type": ["null", "string"], "default": null, "logicalType": "int64"},
+      {"name": "author_id", "type": ["null", "string"], "default": null, "logicalType": "int64"},
+      {"name": "created_time", "type": ["null", "string"], "default": null, "logicalType": "date-time"},
+      {"name": "text", "type": ["null", "string"], "default": null},
+      {"name": "digg_count", "type": ["null", "string"], "default": null},
+      {"name": "reply_count", "type": ["null", "string"], "default": null},
+      {"name": "is_author_digged", "type": ["null", "string"], "default": null},
+      {"name": "user_id", "type": "int"},
+      {"name": "organization_id", "type": "int"},
+      {"name": "project_id", "type": "int"},
+      {"name": "sentiment", "type": "string"},
+      {"name": "tone", "type": "string"}
+    ]
+  }
