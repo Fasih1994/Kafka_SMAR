@@ -38,3 +38,7 @@ This is a Kafka Cluster setup with confluent stack, it includes
 
 - Check running tasks
 `ps aux | grep k_cluster_smar`
+
+- create & delete topic
+`export platform='linkedin'`
+`python scripts/admin/delete_topic.py -t ${platform}_posts,${platform}_post_tasks,${platform}_post_task_finished,${platform}_comments,${platform}_comment_tasks,${platform}_comment_tasks_finished`

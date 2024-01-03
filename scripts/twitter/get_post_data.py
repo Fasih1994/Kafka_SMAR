@@ -1,3 +1,9 @@
+import os
+import sys
+
+BASE_DIR = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+sys.path.append(BASE_DIR)
+
 from urllib.parse import urlparse, parse_qs
 from time import sleep
 
@@ -37,7 +43,7 @@ def delivery_report(err, msg):
     #     msg.key(), msg.topic(), msg.partition(), msg.offset()))
 
 
-def produce_post(msg=None, posts: list=None):
+def produce_post(msg=None, posts: list=None, url: str=None):
     producer = Producer(producer_conf)
 
     for post in posts:
@@ -48,7 +54,7 @@ def produce_post(msg=None, posts: list=None):
             on_delivery=delivery_report
         )
     producer.flush()
-    logger.info(f"produced {len(posts)} posts.")
+    logger.info(f"produced {len(posts)} posts for {url}")
     return True
 
 
@@ -74,7 +80,7 @@ def get_post_data(msg=None, task_data: dict=None):
                 items=posts,
                 keyword=keyword,
                 task_data=task_data)
-            produced = produce_post(msg=msg, posts=posts)
+            produced = produce_post(msg=msg, posts=posts, url=post_url)
 
             if not produced:
                 return False

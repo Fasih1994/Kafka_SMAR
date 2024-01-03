@@ -1,3 +1,9 @@
+import os
+import sys
+
+BASE_DIR = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+sys.path.append(BASE_DIR)
+
 import requests
 
 from confluent_kafka import Consumer, Producer, TopicPartition
@@ -22,19 +28,18 @@ def delivery_report(err, msg):
     if err is not None:
         logger.error("Delivery failed for Keyterm record {}: {}".format(msg.key(), err))
         return
-    logger.info('Keyterm record {} successfully produced to {} in partition [{}] at offset {}'.format(
-        msg.key(), msg.topic(), msg.partition(), msg.offset()))
+    # logger.info('Keyterm record {} successfully produced to {} in partition [{}] at offset {}'.format(
+    #     msg.key(), msg.topic(), msg.partition(), msg.offset()))
 
 
 def update_post_task(msg=None, term_data: dict=None):
 
-    update_url = "https://api.data365.co/v1.1/instagram/tag/{tag_id}/update"
-    update_url = update_url.format(
-        tag_id="".join(term_data['key_term'].split())
-    )
+    update_url = "https://api.data365.co/v1.1/linkedin/post/search/update"
 
     params = {
-        "access_token": twitter_post_base_param['access_token']
+        "access_token": twitter_post_base_param['access_token'],
+        "keywords": term_data['key_term'],
+        "sort_type": "most_relevant"
     }
 
     if term_data['from_date'] and term_data['from_date']!='':

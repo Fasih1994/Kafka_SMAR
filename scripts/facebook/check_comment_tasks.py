@@ -1,3 +1,10 @@
+import os
+import sys
+
+BASE_DIR = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+sys.path.append(BASE_DIR)
+
+
 import requests
 
 from confluent_kafka import Consumer, Producer, TopicPartition
@@ -68,7 +75,7 @@ def check_comment_task(msg=None, task_data: dict=None):
 
 
 def main():
-    consumer_conf['group.id'] = 'facebook_check_comment_tasks0'
+    consumer_conf['group.id'] = 'facebook_check_comment_tasks'
     consumer = Consumer(consumer_conf)
     consumer.subscribe([FACEBOOK_COMMENT_TASKS_TOPIC])
     WAIT_COUNT = 0

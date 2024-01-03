@@ -3,11 +3,11 @@ MY_IP=$(hostname -I | awk '{print $1}')
 
 # Use the extracted IP address in your connector configuration
 CONNECTOR_CONF='{
-    "name": "instagram-post-sink",
+    "name": "linkedin-post-sink",
     "config": {
         "connector.class": "io.confluent.connect.jdbc.JdbcSinkConnector",
         "tasks.max": "1",
-        "topics": "instagram_posts",
+        "topics": "linkedin_posts",
         "connection.url": "'$CONNECTION_URL'",
         "connection.user": "'$DB_USER'",
         "connection.password": "'$DB_PASSWORD'",

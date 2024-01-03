@@ -1,3 +1,9 @@
+import os
+import sys
+
+BASE_DIR = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+sys.path.append(BASE_DIR)
+
 import requests
 
 from confluent_kafka import Consumer, Producer, TopicPartition
@@ -23,8 +29,8 @@ def delivery_report(err, msg):
     if err is not None:
         logger.error("Delivery failed for Comment record {}: {}".format(msg.key(), err))
         return
-    logger.info('Comment record {} successfully produced to {} in partition [{}] at offset {}'.format(
-        msg.key(), msg.topic(), msg.partition(), msg.offset()))
+    # logger.info('Comment record {} successfully produced to {} in partition [{}] at offset {}'.format(
+    #     msg.key(), msg.topic(), msg.partition(), msg.offset()))
 
 
 def update_comment_task(msg=None, post_data: dict=None):

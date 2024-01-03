@@ -1,3 +1,10 @@
+import os
+import sys
+
+BASE_DIR = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+sys.path.append(BASE_DIR)
+
+
 from time import sleep
 from urllib.parse import unquote
 
@@ -38,7 +45,7 @@ def delivery_report(err, msg):
     #     msg.key(), msg.topic(), msg.partition(), msg.offset()))
 
 
-def produce_post(msg=None, posts: list=None):
+def produce_post(msg=None, posts: list=None, url: str=None):
     producer = Producer(producer_conf)
 
     for post in posts:
@@ -50,7 +57,7 @@ def produce_post(msg=None, posts: list=None):
             on_delivery=delivery_report
         )
     producer.flush()
-    logger.info(f"produced {len(posts)} posts.")
+    logger.info(f"produced {len(posts)} posts for {url}")
     return True
 
 
@@ -76,7 +83,7 @@ def get_post_data(msg=None, task_data: dict=None):
                 items=posts,
                 keyword=keyword,
                 task_data=task_data)
-            produced = produce_post(msg=msg, posts=posts)
+            produced = produce_post(msg=msg, posts=posts, url=post_url)
 
             if not produced:
                 return False
@@ -96,7 +103,7 @@ def get_post_data(msg=None, task_data: dict=None):
 
 
 def main():
-    consumer_conf['group.id'] = 'facebook_get_post_data1'
+    consumer_conf['group.id'] = 'facebook_get_post_data'
     consumer = Consumer(consumer_conf)
     consumer.subscribe([FACEBOOK_POST_TASKS_FINISHED_TOPIC])
     WAIT_COUNT = 0

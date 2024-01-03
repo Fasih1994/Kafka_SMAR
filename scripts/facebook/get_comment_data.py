@@ -1,3 +1,10 @@
+import os
+import sys
+
+BASE_DIR = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+sys.path.append(BASE_DIR)
+
+
 from urllib.parse import urlparse, parse_qs
 from time import sleep
 
@@ -105,7 +112,7 @@ def get_comments_data(msg=None, task_data: dict=None):
 
 
 def main():
-    consumer_conf['group.id'] = 'facebook_get_comments_data0'
+    consumer_conf['group.id'] = 'facebook_get_comments_data'
     consumer = Consumer(consumer_conf)
     consumer.subscribe([FACEBOOK_COMMENT_TASKS_FINISHED_TOPIC])
     WAIT_COUNT = 0

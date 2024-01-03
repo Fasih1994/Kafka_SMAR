@@ -8,7 +8,7 @@ from scripts.config import (
     POST_SCHEMA, COMMENT_SCHEMA,
     FACEBOOK_POST_SCHEMA, FACEBOOK_COMMENT_SCHEMA,
     INSTAGRAM_POST_SCHEMA, INSTAGRAM_COMMENT_SCHEMA,
-    # LINKEDIN_POST_SCHEMA, LINKEDIN_COMMENT_SCHEMA,
+    LINKEDIN_POST_SCHEMA, LINKEDIN_COMMENT_SCHEMA,
     TIKTOK_POST_SCHEMA, TIKTOK_COMMENT_SCHEMA,
 )
 
@@ -34,10 +34,10 @@ instagram_post_serializer = AvroSerializer(schema_registry_client,
                                           INSTAGRAM_POST_SCHEMA)
 instagram_comment_serializer = AvroSerializer(schema_registry_client,
                                           INSTAGRAM_COMMENT_SCHEMA)
-# linkedin_post_serializer = AvroSerializer(schema_registry_client,
-#                                           LINKEDIN_POST_SCHEMA)
-# linkedin_comment_serializer = AvroSerializer(schema_registry_client,
-#                                           LINKEDIN_COMMENT_SCHEMA)
+linkedin_post_serializer = AvroSerializer(schema_registry_client,
+                                          LINKEDIN_POST_SCHEMA)
+linkedin_comment_serializer = AvroSerializer(schema_registry_client,
+                                          LINKEDIN_COMMENT_SCHEMA)
 tiktok_post_serializer = AvroSerializer(schema_registry_client,
                                           TIKTOK_POST_SCHEMA)
 tiktok_comment_serializer = AvroSerializer(schema_registry_client,
@@ -60,10 +60,10 @@ instagram_post_deserializer = AvroDeserializer(schema_registry_client,
                                           INSTAGRAM_POST_SCHEMA)
 instagram_comment_deserializer = AvroDeserializer(schema_registry_client,
                                           INSTAGRAM_COMMENT_SCHEMA)
-# linkedin_post_deserializer = AvroDeserializer(schema_registry_client,
-#                                           LINKEDIN_POST_SCHEMA)
-# linkedin_comment_deserializer = AvroDeserializer(schema_registry_client,
-#                                           LINKEDIN_COMMENT_SCHEMA)
+linkedin_post_deserializer = AvroDeserializer(schema_registry_client,
+                                          LINKEDIN_POST_SCHEMA)
+linkedin_comment_deserializer = AvroDeserializer(schema_registry_client,
+                                          LINKEDIN_COMMENT_SCHEMA)
 tiktok_post_deserializer = AvroDeserializer(schema_registry_client,
                                           TIKTOK_POST_SCHEMA)
 tiktok_comment_deserializer = AvroDeserializer(schema_registry_client,

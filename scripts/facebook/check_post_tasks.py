@@ -1,3 +1,10 @@
+import os
+import sys
+
+BASE_DIR = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+sys.path.append(BASE_DIR)
+
+
 import requests
 
 from confluent_kafka import Consumer, Producer, TopicPartition
@@ -23,8 +30,8 @@ def delivery_report(err, msg):
     if err is not None:
         logger.error("Delivery failed for Task record {}: {}".format(msg.key(), err))
         return
-    logger.info('Task record {} successfully produced to {} parttition [{}] at offset {}'.format(
-        msg.key(), msg.topic(), msg.partition(), msg.offset()))
+    # logger.info('Task record {} successfully produced to {} parttition [{}] at offset {}'.format(
+    #     msg.key(), msg.topic(), msg.partition(), msg.offset()))
 
 
 def check_post_task(msg=None, task_data: dict=None):

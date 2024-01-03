@@ -1,3 +1,11 @@
+import os
+import sys
+
+BASE_DIR = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+sys.path.append(BASE_DIR)
+
+
+
 import requests
 
 from confluent_kafka import Consumer, Producer, TopicPartition
@@ -22,8 +30,8 @@ def delivery_report(err, msg):
     if err is not None:
         logger.error("Delivery failed for Keyterm record {}: {}".format(msg.key(), err))
         return
-    logger.info('Keyterm record {} successfully produced to {} in partition [{}] at offset {}'.format(
-        msg.key(), msg.topic(), msg.partition(), msg.offset()))
+    # logger.info('Keyterm record {} successfully produced to {} in partition [{}] at offset {}'.format(
+    #     msg.key(), msg.topic(), msg.partition(), msg.offset()))
 
 
 def update_post_task(msg=None, term_data: dict=None):
@@ -72,7 +80,7 @@ def update_post_task(msg=None, term_data: dict=None):
 
 
 def main():
-    consumer_conf['group.id'] = 'facebook_update_post_tasks0'
+    consumer_conf['group.id'] = 'facebook_update_post_tasks'
     consumer = Consumer(consumer_conf)
     consumer.subscribe([KEY_TERM_TOPIC])
     WAIT_COUNT = 0

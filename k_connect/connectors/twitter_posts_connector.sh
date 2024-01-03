@@ -1,16 +1,13 @@
-# Get the first IP address from the output of hostname -I
-MY_IP=$(hostname -I | awk '{print $1}')
-
 # Use the extracted IP address in your connector configuration
 CONNECTOR_CONF='{
     "name": "twitter-post-sink",
     "config": {
         "connector.class": "io.confluent.connect.jdbc.JdbcSinkConnector",
         "tasks.max": "1",
-        "topics": "posts",
-        "connection.url": "jdbc:sqlserver://'${MY_IP}';databaseName=TEST_DB",
-        "connection.user": "sa",
-        "connection.password": "Fasih!23",
+        "topics": "twitter_posts",
+        "connection.url": "'$CONNECTION_URL'",
+        "connection.user": "'$DB_USER'",
+        "connection.password": "'$DB_PASSWORD'",
         "auto.create": "true",
         "insert.mode": "upsert",
         "value.converter": "io.confluent.connect.avro.AvroConverter",

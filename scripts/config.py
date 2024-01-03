@@ -34,12 +34,12 @@ avro_schema_path = "/home/fasih/k_cluster_smar/schema/avro"
 KEY_TERM_TOPIC = "keyterm"
 
 # Twitter
-POSTS_TOPIC = "posts"
-POST_TASKS_TOPIC = "post_tasks"
-POST_TASKS_FINISHED_TOPIC = "post_task_finished"
-COMMENTS_TOPIC = "comments"
-COMMENT_TASKS_TOPIC = "comment_tasks"
-COMMENT_TASKS_FINISHED_TOPIC = "comment_tasks_finished"
+POSTS_TOPIC = "twitter_posts"
+POST_TASKS_TOPIC = "twitter_post_tasks"
+POST_TASKS_FINISHED_TOPIC = "twitter_post_task_finished"
+COMMENTS_TOPIC = "twitter_comments"
+COMMENT_TASKS_TOPIC = "twitter_comment_tasks"
+COMMENT_TASKS_FINISHED_TOPIC = "twitter_comment_tasks_finished"
 
 # Facebook
 FACEBOOK_POSTS_TOPIC = "facebook_posts"
@@ -99,11 +99,11 @@ with open(os.path.join(avro_schema_path, 'instagram_post.avsc')) as f:
 with open(os.path.join(avro_schema_path, 'instagram_comment.avsc')) as f:
     INSTAGRAM_COMMENT_SCHEMA = f.read()
 
-# with open(os.path.join(avro_schema_path, 'linkedin_post.avsc')) as f:
-#     LINKEDIN_POST_SCHEMA = f.read()
+with open(os.path.join(avro_schema_path, 'linkedin_post.avsc')) as f:
+    LINKEDIN_POST_SCHEMA = f.read()
 
-# with open(os.path.join(avro_schema_path, 'linkedin_comment.avsc')) as f:
-#     LINKEDIN_COMMENT_SCHEMA = f.read()
+with open(os.path.join(avro_schema_path, 'linkedin_comment.avsc')) as f:
+    LINKEDIN_COMMENT_SCHEMA = f.read()
 
 with open(os.path.join(avro_schema_path, 'tiktok_post.avsc')) as f:
     TIKTOK_POST_SCHEMA = f.read()
