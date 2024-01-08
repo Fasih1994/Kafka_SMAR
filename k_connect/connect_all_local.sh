@@ -2,10 +2,11 @@
 
 
 MY_IP=$(hostname -I | awk '{print $1}')
-DB_NAME="TEST_DB"
+DB_NAME="master"
 DB_USER="sa"
-DB_PASSWORD="Fasih!23"
-CONNECTION_URL="jdbc:sqlserver://${MY_IP};databaseName=${DB_NAME}"
+DB_PASSWORD="Smmartv!0"
+DB_PORT=1434
+CONNECTION_URL="jdbc:sqlserver://${MY_IP}:${DB_PORT};databaseName=${DB_NAME}"
 
 
 export CONNECTION_URL
