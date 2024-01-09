@@ -14,7 +14,7 @@ docker compose -f $(pwd)/cluster/docker_compose.yml up -d schema-registry
 
 sleep 5
 echo "STARTING KAFKA_CONNECT"
-docker compose -f $(pwd)/k_connect/docker_compose.yml up -d kafka-connect
+docker compose -f $(pwd)/k_connect/docker_compose.yml up -d --build
 # echo "Starting Kafka brokers 1, 2, 3"
 # docker compose -f $(pwd)/kafka_1/docker_compose.yml up -d
 # docker compose -f $(pwd)/kafka_2/docker_compose.yml up -d
