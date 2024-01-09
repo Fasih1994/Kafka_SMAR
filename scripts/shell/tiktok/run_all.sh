@@ -1,4 +1,4 @@
-ROOT_DIR=/home/fasih/k_cluster_smar/scripts/shell/tiktok
+ROOT_DIR=$(dirname "$0")
 
 sh $ROOT_DIR/run_update_post_tasks.sh &
 sh $ROOT_DIR/run_check_post_tasks.sh &

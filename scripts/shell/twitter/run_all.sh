@@ -1,4 +1,4 @@
-ROOT_DIR=/home/fasih/k_cluster_smar/scripts/shell/twitter
+ROOT_DIR=$(dirname "$0")
 
 sh $ROOT_DIR/run_update_post_tasks_twitter.sh &
 sh $ROOT_DIR/run_check_post_tasks_twitter.sh &
