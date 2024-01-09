@@ -4,7 +4,11 @@
 BOOTSTRAP_SERVER="localhost:9093,localhost:9094,localhost:9095"
 CONSUMER_GROUP="linkedin_get_comments_data"
 
-ROOT_DIR=/home/fasih/k_cluster_smar
+if [ "$ENVIRONMENT" == "dev" ]; then
+    ROOT_DIR="/home/fasih/k_cluster_smar"
+elif [ "$ENVIRONMENT" == "prod" ]; then
+    ROOT_DIR="/home/django/Kafka_SMAR"
+fi
 
 # Run the kafka-consumer-groups command within the Docker container and filter the relevant information
 current_time=$(date +"%Y-%m-%d %H:%M:%S")
