@@ -19,7 +19,7 @@
       {"name": "image_urls", "type": ["null", "string"], "default": null},
       {"name": "interest_count", "type": ["null", "int"], "default": null},
       {"name": "lang", "type": ["null", "string"], "default": null},
-      {"name": "like_count", "type": "int"},
+      {"name": "like_count", "type": "int", "default": 0},
       {"name": "links", "type": ["null", "string"], "default": null},
       {"name": "maybe_count", "type": ["null", "int"], "default": null},
       {"name": "mentioned_profiles", "type": ["null", "string"], "default": null},

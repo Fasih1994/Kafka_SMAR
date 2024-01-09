@@ -32,7 +32,9 @@ def get_post_url(url: str=None)-> str:
         "https://api.data365.co/v1.1/tiktok/search/post/update",
         "https://api.data365.co/v1.1/tiktok/search/post/items"
     )
-    url = "&".join(url.split('&')[:-2])
+    print(url)
+    if 'to_date' in url:
+        url = "&".join(url.split('&')[:-2])
     return url
 
 
@@ -63,9 +65,11 @@ def produce_post(msg=None, posts: list=None, url: str=None):
 
 def get_post_data(msg=None, task_data: dict=None):
     # check task status
+
     post_url = get_post_url(task_data['url'])
 
     # get key word from url
+    logger.info(post_url)
     keyword = parse_qs(urlparse(post_url).query)['keywords'][0]
     data_available = True
     cursor = None
@@ -133,6 +137,9 @@ def main():
                         consumer.seek(tp)
                         logger.error(e)
         except KeyboardInterrupt:
+            break
+        except Exception as e:
+            logger.error(e)
             break
 
     consumer.close()

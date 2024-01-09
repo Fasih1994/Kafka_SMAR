@@ -5,7 +5,7 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__fil
 sys.path.append(BASE_DIR)
 
 from time import sleep
-from urllib.parse import unquote
+from urllib.parse import urlparse, parse_qs
 
 from confluent_kafka import Consumer, Producer, TopicPartition
 from confluent_kafka.serialization import SerializationContext, MessageField
@@ -65,7 +65,7 @@ def get_post_data(msg=None, task_data: dict=None):
     post_url = get_post_url(task_data['url'])
 
     # get key word from url
-    keyword = unquote(post_url.split('/')[6])
+    keyword = parse_qs(urlparse(post_url).query)['keywords'][0]
     data_available = True
     cursor = None
     tries = 0

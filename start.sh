@@ -1,6 +1,6 @@
 #/bin/zsh
 # echo "Creating network k_cluster_net"
-# docker network create -d bridge k_cluster_net
+docker network create -d bridge cluster_default
 echo "STARTING ZOOKEEPER"
 docker compose -f $(pwd)/cluster/docker_compose.yml up -d zookeeper
 
